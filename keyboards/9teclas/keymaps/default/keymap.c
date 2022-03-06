@@ -19,17 +19,17 @@ enum custom_keycodes {
     GITADD,
     GITSTATUS,
     NEWBRANCH,
-    CO_MASTER,
-    GIT_CLONE,
+    COMASTER,
+    GITCLONE,
     GITCOMMIT,
-    RAGE_COMM
+    RAGECOMM
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* BASE
     * ,--------------------.
-    * |   7  |   8  | 9/FN |
+    * |   7  |   8  |  FN  |
     * |------+------+------|
     * |   4  |   5  |   6  |
     * |------+------+------|
@@ -37,7 +37,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * `--------------------'
     */
     [_BASE] = LAYOUT(
-        KC_7,       KC_8,       TD(DIFF_LAYR, KC_9),
+        KC_7,       KC_8,       TD(DIFF_LAYR),
         KC_4,       KC_5,       KC_6,
         KC_1,       KC_2,       KC_3
     ),
@@ -59,32 +59,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* GIT
     * ,-----------------------------------.
-    * | GIT_CLONE | RAGE_COMM |     FN    |
+    * | GITCLONE  | RAGECOMM  |     FN    |
     * |-----------+-----------+-----------|
-    * | GITSTATUS | CO_MASTER | NEWBRANCH |
+    * | GITSTATUS | COMASTER  | NEWBRANCH |
     * |-----------+-----------+-----------|
     * |   GITADD  | GITCOMMIT |  GITPUSH  |
     * `-----------------------------------'
     */
     [_GIT] = LAYOUT(
-        GIT_CLONE,   ,              TD(DIFF_LAYR),
-        GITSTATUS,   CO_MASTER,     NEWBRANCH,
-        GITADD,      GITCOMMIT,     GITPUSH)
-    ),
-
-    /* OBS
-    * ,-----------------------------------.
-    * |           | RAGE_COMM |     FN    |
-    * |-----------+-----------+-----------|
-    * | GITSTATUS | CO_MASTER | NEWBRANCH |
-    * |-----------+-----------+-----------|
-    * | MUTE | GITCOMMIT |  GITPUSH  |
-    * `-----------------------------------'
-    */
-    [_MEDIA] = LAYOUT(
-        GIT_CLONE,   ,              TD(DIFF_LAYR),
-        GITSTATUS,   CO_MASTER,     NEWBRANCH,
-        GITADD,      GITCOMMIT,     GITPUSH)
+        GITCLONE,     RAGECOMM,    TD(DIFF_LAYR),
+        GITSTATUS,    COMASTER,    NEWBRANCH,
+        GITADD,       GITCOMMIT,   GITPUSH
     ),
 
     /* OBS
@@ -97,9 +82,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * `-----------------------------------------'
     */
     [_OBS] = LAYOUT(
-        KC_G,   KC_H,     TD(DIFF_LAYR),
-        KC_D,   KC_E,     KC_F,
-        KC_A,   KC_B,     KC_C)
+        KC_G,   KC_H,   TD(DIFF_LAYR),
+        KC_D,   KC_E,   KC_F,
+        KC_A,   KC_B,   KC_C
+    ),
+
+    /* MEDIA
+    * ,---------------------------------------------.
+    * |    SLEEP   |     WAKEUP     |       FN      |
+    * |------------+----------------+---------------|
+    * | PLAY/PAUSE |    PREVTRACK   |   NEXTTRACK   |
+    * |------------+----------------+---------------|
+    * |    MUTE    |   VOLUMEDOWN   |   NVOLUMEUP   |
+    * `---------------------------------------------'
+    */
+    [_MEDIA] = LAYOUT(
+        KC_SLEP,    KC_WAKE,    TD(DIFF_LAYR),
+        KC_MPLY,    KC_MPRV,    KC_MNXT,
+        KC_MUTE,    KC_VOLD,    KC_VOLU
     )
 };
 
@@ -147,7 +147,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
 
-    case CO_MASTER:
+    case COMASTER:
         if (record->event.pressed) {
             SEND_STRING("git checkout master");
             register_code(KC_ENTER);
@@ -158,13 +158,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
 
-    case GIT_CLONE:
+    case GITCLONE:
         if (record->event.pressed) {
             SEND_STRING("git clone");
         }
         break;
 
-    case RAGE_COMM:
+    case RAGECOMM:
         if (record->event.pressed) {
             SEND_STRING("git commit -m '(┛ಠ_ಠ)┛彡┻━┻'");
             register_code(KC_ENTER);
