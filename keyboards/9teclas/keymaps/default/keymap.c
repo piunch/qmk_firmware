@@ -186,7 +186,8 @@ typedef enum {
     TD_DOUBLE_TAP,
     TD_TRIPLE_TAP,
     TD_FOUR_TAP,
-    TD_FIVE_HOLD
+    TD_FIVE_TAP,
+    TD_SIX_HOLD
 } td_state_t;
 
 typedef struct {
@@ -213,8 +214,9 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
     else if (state->count == 2) return TD_DOUBLE_TAP;
     else if (state->count == 3) return TD_TRIPLE_TAP;
     else if (state->count == 4) return TD_FOUR_TAP;
-    else if (state->count == 5) {
-        if (state->pressed) return TD_FIVE_HOLD;
+    else if (state->count == 5) return TD_FIVE_TAP;
+    else if (state->count == 6) {
+        if (state->pressed) return TD_SIX_HOLD;
     }
     return TD_UNKNOWN;
 }
@@ -235,6 +237,7 @@ void ql_finished(qk_tap_dance_state_t *state, void *user_data) {
             layer_off(1);
             layer_off(2);
             layer_off(3);
+            layer_off(4);
 
     switch (ql_tap_state.state) {
         case TD_SINGLE_TAP:
@@ -256,7 +259,12 @@ void ql_finished(qk_tap_dance_state_t *state, void *user_data) {
             layer_on(3);
             break;
 
-        case TD_FIVE_HOLD:
+        case TD_FIVE_TAP:
+
+            layer_on(4);
+            break;
+
+        case TD_SIX_HOLD:
             reset_keyboard();
             break;
 
